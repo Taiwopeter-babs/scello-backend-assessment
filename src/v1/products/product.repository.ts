@@ -2,7 +2,7 @@ import { sequelize } from "@/database";
 import { Product } from "@/models";
 import { Repository } from "sequelize-typescript";
 import { ProductCreate, ProductQuery, ProductUpdate } from "./product.types";
-import { Op, UpdateOptions, WhereOptions } from "sequelize";
+import { Op, OrderItem, UpdateOptions, WhereOptions } from "sequelize";
 import { Pagination } from "../pagination";
 import { IPageData } from "@src/shared";
 import { IResult, Result } from "../result";
@@ -32,13 +32,6 @@ export default class ProductRepository extends Pagination {
       endingBefore,
     });
 
-    console.log(
-      this.getCursorBasedPaginationQuery({
-        startingAfter,
-        endingBefore,
-      })
-    );
-
     // sort price query
     const filterPriceQuery =
       minPrice || maxPrice
@@ -55,31 +48,37 @@ export default class ProductRepository extends Pagination {
       ...filterPriceQuery,
       ...(name && { name: { [Op.like]: `%${name}%` } }),
       ...(category && { category: { [Op.eq]: category } }),
-      ...(sortName && { sortName: ["name", sortName === "asc" ? "ASC" : "DESC"] }),
-      ...(sortPrice && { sortPrice: ["price", sortPrice === "asc" ? "ASC" : "DESC"] }),
-      ...(sortStockQuantity && {
-        stockQuantity: ["stockQuantity", sortStockQuantity === "asc" ? "ASC" : "DESC"],
-      }),
     };
+
+    const sorts: OrderItem[] = [];
+
+    // Return the latest data if any sorting parameters are not included
+    if (!sortName && !sortPrice && !sortStockQuantity) {
+      sorts.push([
+        "createdAt",
+        navigationDirection === "forward" || navigationDirection === "none" ? "DESC" : "ASC",
+      ]);
+    }
+
+    if (sortName) sorts.push(["name", sortName === "asc" ? "ASC" : "DESC"]);
+
+    if (sortPrice) sorts.push(["price", sortPrice === "asc" ? "ASC" : "DESC"]);
+
+    if (sortStockQuantity)
+      sorts.push(["stockQuantity", sortStockQuantity === "asc" ? "ASC" : "DESC"]);
 
     try {
       const products = await this._productRepo.findAll({
         where: whereConditions,
         limit,
         offset,
-        order: [
-          [
-            "createdAt",
-            navigationDirection === "forward" || navigationDirection === "none" ? "DESC" : "ASC",
-          ],
-        ],
+        order: [...sorts],
       });
 
       const data = await this.getPaginationData(products, navigationDirection);
 
       return Result.Ok(data);
     } catch (error) {
-      console.log(error);
       return Result.ServerError("An error occurred while fetching products");
     }
   }
@@ -92,7 +91,6 @@ export default class ProductRepository extends Pagination {
 
       return product ? Result.Ok(product) : Result.NotFound("Product was not found");
     } catch (error) {
-      console.log(error);
       return Result.ServerError("An error occurred while fetching product");
     }
   }
@@ -111,7 +109,6 @@ export default class ProductRepository extends Pagination {
 
       return Result.Created(product);
     } catch (error) {
-      console.log(error);
       return Result.ServerError("An error occurred while creating product");
     }
   }
@@ -133,7 +130,6 @@ export default class ProductRepository extends Pagination {
 
       return Result.Updated("Product updated");
     } catch (error) {
-      console.log(error);
       return Result.ServerError("An error occurred while updating product");
     }
   }
@@ -152,7 +148,6 @@ export default class ProductRepository extends Pagination {
 
       return Result.Created(product);
     } catch (error) {
-      console.log(error);
       return Result.ServerError("An error occurred while creating product");
     }
   }
