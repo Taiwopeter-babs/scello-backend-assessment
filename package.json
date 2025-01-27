@@ -1,13 +1,14 @@
 {
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && node dist/app.js",
-    "dev": "nodemon src/app.ts",
+    "start": "npm run build && node -r tsconfig-paths/register dist/src/app.js",
+    "dev": "nodemon",
     "db:create": "npx sequelize-cli db:create --config config/sequelize-cli.js",
     "db:migrate": "npx sequelize-cli db:migrate --config config/sequelize-cli.js",
     "db:generate": "npx sequelize-cli migration:generate --name"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "concurrently": "^9.1.2",
     "nodemon": "^3.1.9",
@@ -18,12 +19,15 @@
   },
   "dependencies": {
     "@types/node": "^22.10.10",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "zod": "^3.24.1"
   }
 }

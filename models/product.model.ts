@@ -13,22 +13,22 @@ import {
 
 @Table({ tableName: "products" })
 export class Product extends Model {
-  @Column
   @PrimaryKey
   @AutoIncrement
-  id: string;
-
   @Column
+  id: number;
+
   @Index
   @NotNull
+  @Column({ allowNull: false })
   name: string;
 
-  @Column
   @NotNull
+  @Column({ allowNull: false })
   description: string;
 
-  @Column
   @Default(0)
+  @Column
   price: number;
 
   @Column
