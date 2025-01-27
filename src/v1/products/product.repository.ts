@@ -97,9 +97,10 @@ export default class ProductRepository extends Pagination {
 
   async addProduct(productData: ProductCreate): Promise<IResult<Product>> {
     try {
-      const condition: WhereOptions = { name: { [Op.like]: productData.name } };
-
-      const productExists = await this.findProductByCondition(condition);
+      const productExists = await this._productRepo.findOne({
+        where: { name: { [Op.like]: productData.name } },
+        attributes: ["id"],
+      });
 
       if (productExists) return Result.BadRequest("Product with name already exists");
 
@@ -115,16 +116,12 @@ export default class ProductRepository extends Pagination {
 
   async updateProduct(productId: number, productData: ProductUpdate): Promise<IResult<Product>> {
     try {
-      const condition: WhereOptions = { id: productId };
-
-      const productExists = await this.findProductByCondition(condition);
+      const productExists = await this._productRepo.findOne({
+        where: { id: productId },
+        attributes: ["id"],
+      });
 
       if (!productExists) return Result.NotFound("Product was not found");
-
-      const op: UpdateOptions = {
-        where: { id: productId },
-        ...productData,
-      };
 
       await this._productRepo.update({ ...productData }, { where: { id: productId } });
 
@@ -136,9 +133,9 @@ export default class ProductRepository extends Pagination {
 
   async deleteProduct(productId: number) {
     try {
-      const condition: WhereOptions = { id: productId };
-
-      const productExists = await this.findProductByCondition(condition);
+      const productExists = await this._productRepo.findOne({
+        where: { id: productId, attributes: ["id"] },
+      });
 
       if (!productExists) return Result.NotFound("Product was not found");
 
@@ -149,16 +146,6 @@ export default class ProductRepository extends Pagination {
       return Result.Created(product);
     } catch (error) {
       return Result.ServerError("An error occurred while creating product");
-    }
-  }
-
-  private async findProductByCondition(condition: WhereOptions) {
-    try {
-      const product = await this._productRepo.findOne({ where: condition });
-
-      return product;
-    } catch (error) {
-      throw error;
     }
   }
 }

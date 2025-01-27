@@ -53,8 +53,6 @@ export default class ProductController {
 
     const dataToReturn = success ? { message } : { error };
 
-    console.log(dataToReturn);
-
     response.status(statusCode).json({ dataToReturn });
   };
 
