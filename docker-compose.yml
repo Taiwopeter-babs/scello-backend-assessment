@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: scelloo-postgres-db
+    environment:
+      POSTGRES_USER: scelloo-user
+      POSTGRES_PASSWORD: scelloo-password
+      POSTGRES_DB: scelloo-db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DEFAULT_SERVER: scelloo-postgres-db
+
+volumes:
+  postgres-data:
