@@ -14,7 +14,7 @@ export const apiV1Options: swaggerJSDoc.Options = {
         url: "https://spdx.org/licenses/MIT.html",
       },
 
-      consumes: {
+      components: {
         securitySchemes: {
           BearerAuth: {
             type: "http",
