@@ -1,19 +1,13 @@
 # Build stage
-FROM node:20 as build
+FROM node:20 AS build
 
-# Create app directory and set permissions
-RUN mkdir -p /home/node/app/node_modules/ && chown -R node:node /home/node
-
-WORKDIR /home/node/app
+WORKDIR /home/scelloo/app
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
-
-# Copy application code with necessary permissions to container
-COPY --chown=node:node . .
+RUN npm ci --only=production
 
 # Build the application
 RUN npm run build
@@ -22,9 +16,7 @@ RUN npm run build
 FROM node:20-alpine3.18
 
 # Create app directory and set permissions
-RUN mkdir -p /home/node/app/node_modules/ && chown -R node:node /home/node
-
-WORKDIR /home/node/app
+WORKDIR /home/scelloo/app
 
 # Copy only the production dependencies
 COPY package*.json ./
@@ -34,7 +26,9 @@ RUN npm install --only=production
 USER node
 
 # Copy built application from the build stage
-COPY --chown=node:node --from=build /home/node/app/dist ./
+COPY --from=build /home/scelloo/app/dist ./
+
+EXPOSE 5000
 
 # Start the application
 CMD [ "node", "./dist/app.js" ]
