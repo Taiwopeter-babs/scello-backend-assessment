@@ -66,3 +66,66 @@ CREATE TABLE IF NOT EXISTS products (
 -- Create index for the `createdAt` field for cursor based pagination
 CREATE INDEX product_createdAt_index ON products(createdAt);
 ```
+
+## Deployment
+
+The API server is deployed on render with the url `https://scello-backend-assessment.onrender.com` and versioned.
+
+## Example
+
+```javascript
+const BASE_URL =  'https://scello-backend-assessment.onrender.com'
+```
+
+- GET ALL PRODUCTS (PAGINATED)
+
+```javascript
+const response = await fetch(BASE_URL);
+console.log(response.json());
+```
+
+will return
+
+```json
+{
+   "data" : [
+      {
+         "category" : "Technology",
+         "createdAt" : "2025-01-28T16:46:04.605Z",
+         "description" : "My first product",
+         "id" : 1,
+         "name" : "sheets",
+         "price" : 7000,
+         "stockQuantity" : 300,
+         "updatedAt" : "2025-01-28T16:46:04.605Z"
+      }
+   ],
+   "nextCursor" : "",
+   "prevCursor" : ""
+}
+```
+
+- CREATE A NEW PRODUCT WITH THE SAME NAME
+
+```javascript
+const data = {
+    "name": "sheets", "description": "My first product", "price": 7000, "category": "Technology", "stockQuantity": 300
+    }
+
+
+const res =  await fetch("https://api.github.com/users/andrewmcodes", 
+{
+    method: "POST", 
+    body: JSON.stringify(data)
+});
+
+console.log(res)
+```
+
+will return
+
+```json
+{
+   "error" : "Product with name already exists"
+}
+```
