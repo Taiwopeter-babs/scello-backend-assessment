@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "copy-yaml": "copyfiles -u 3 src/**/*.yml dist/swagger-docs",
+    "build": "webpack --config webpack.config.js && npm run copy-yaml",
     "start": "npm run build && node dist/app.js",
     "clean": "rm -r dist/",
     "dev": "nodemon",

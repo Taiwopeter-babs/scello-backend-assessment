@@ -26,6 +26,6 @@
       "@/*": ["./*"]
     }
   },
-   "include": ["**/*.ts", "*.ts", "*/*.ts", "src/v1/swagger-docs"],
+   "include": ["**/*.ts", "*.ts", "*/*.ts", "**/*.yml"],
   "exclude": ["node_modules"]
 }

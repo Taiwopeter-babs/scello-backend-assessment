@@ -6,7 +6,7 @@ import YAML from "yaml";
 import { productRouter } from "./products";
 import path from "path";
 
-const filePath = path.join(__dirname, "swagger-docs", "index.yml");
+const filePath = path.join(__dirname, "swagger-docs", "v1.yml");
 const file = fs.readFileSync(filePath, "utf8");
 const swaggerDocument = YAML.parse(file);
 
