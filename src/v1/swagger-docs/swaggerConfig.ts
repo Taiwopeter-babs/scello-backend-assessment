@@ -13,7 +13,11 @@ export const apiV1Options: swaggerJSDoc.Options = {
         name: "MIT",
         url: "https://spdx.org/licenses/MIT.html",
       },
-
+      contact: {
+        name: "Scelloo",
+        url: "https://scelloo.com",
+        email: "info@email.com",
+      },
       components: {
         securitySchemes: {
           BearerAuth: {
@@ -21,60 +25,55 @@ export const apiV1Options: swaggerJSDoc.Options = {
             scheme: "bearer",
             bearerFormat: "JWT",
           },
-          // This defines reusable components
-          schemas: {
-            // Properties common to all the objects
-            CommonParams: {
-              type: "object",
-              properties: {
-                id: { type: "string" },
-                createdAt: { type: "string" },
-                updatedAt: { type: "string" },
-              },
+        },
+        // This defines reusable components
+        schemas: {
+          // Properties common to all the objects
+          CommonParams: {
+            type: "object",
+            properties: {
+              id: { type: "string" },
+              createdAt: { type: "string" },
+              updatedAt: { type: "string" },
             },
+          },
 
-            // Pricing
-            ...Product,
+          // Product
+          ...Product,
 
-            // Error objects
-            Error: {
-              type: "object",
-              properties: {
-                error: { type: "string" },
-              },
+          // Error objects
+          Error: {
+            type: "object",
+            properties: {
+              error: { type: "string" },
             },
-            ErrorArray: {
-              type: "object",
-              properties: {
-                error: {
-                  type: "array",
-                  items: {
-                    type: "object",
-                    properties: {
-                      paths: {
-                        type: "array",
-                        items: { type: "string" },
-                      },
+          },
+          ErrorArray: {
+            type: "object",
+            properties: {
+              error: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    paths: {
+                      type: "array",
+                      items: { type: "string" },
                     },
-                    message: { type: "string" },
                   },
+                  message: { type: "string" },
                 },
               },
             },
           },
         },
       },
-      contact: {
-        name: "Scelloo",
-        url: "https://scelloo.com",
-        email: "info@email.com",
-      },
-      servers: [
-        {
-          url: CONFIG.serverUrl,
-        },
-      ],
     },
+    servers: [
+      {
+        url: CONFIG.serverUrl,
+      },
+    ],
   },
-  apis: ["./**/*route.ts"],
+  apis: ["./**/**/*route.ts"],
 };

@@ -91,7 +91,6 @@ const productController = new ProductController(productService);
  *             schema:
  *               type: object
  *               properties:
- *
  *                 data:
  *                   type: array
  *                   items:
@@ -212,7 +211,7 @@ productRouter.delete("/:id", validateIdParameter, productController.deleteProduc
  *   put:
  *     tags:
  *       - Products
- *     summary: Updates an event.
+ *     summary: Updates a product.
  *     parameters:
  *       - name: id
  *         in: path
@@ -235,8 +234,6 @@ productRouter.delete("/:id", validateIdParameter, productController.deleteProduc
  *             schema:
  *               type: object
  *               properties:
- *                 event:
- *                   $ref: '#/components/schemas/Event'
  *                 message:
  *                   type: string
  *       '400':

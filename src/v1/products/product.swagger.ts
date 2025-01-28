@@ -13,7 +13,7 @@ const Product = {
       description: { type: "string" },
       category: { type: "string" },
       stockQuantity: { type: "integer" },
-      price: { type: "string" },
+      price: { type: "decimal" },
     },
   },
 

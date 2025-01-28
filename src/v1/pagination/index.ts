@@ -1,7 +1,9 @@
 import { IPageData, PageDirection, RequestQuery } from "@src/shared";
-import { PAGE_SIZE } from "../constants";
 
 export class Pagination {
+  /** The limit of the items to return for a paginated dataset */
+  private PAGE_SIZE = 20;
+
   /**
    * Get the pagination paramaters for the cursor-based database query
    *
@@ -26,12 +28,12 @@ export class Pagination {
       : "none";
 
     return {
-      limit: PAGE_SIZE + 1, // Fetch one more item to check data continuity
+      limit: this.PAGE_SIZE + 1, // Fetch one more item to check data continuity
 
       // Skip to the item after/before the given cursor
       offset: navigationDirection === "none" ? 0 : 1,
 
-      // Id of the item from which the fetch goes backwards or forwards
+      // Value of the item from which the fetch goes backwards or forwards
       cursor: cursor ? { createdAt: cursor } : undefined,
 
       navigationDirection,
@@ -49,13 +51,13 @@ export class Pagination {
     }
 
     /** Check if there is more data after or before the page data */
-    const hasMore = data.length > PAGE_SIZE;
+    const hasMore = data.length > this.PAGE_SIZE;
 
     const pageData =
       navDirection === "backward"
         ? // reverse the dataset in case of back navigation
-          data.slice(-PAGE_SIZE).reverse()
-        : data.slice(0, PAGE_SIZE);
+          data.slice(-this.PAGE_SIZE).reverse()
+        : data.slice(0, this.PAGE_SIZE);
 
     const result: IPageData<T> = {
       data: pageData as T,
