@@ -9,6 +9,10 @@ This repository contains code and configurations for Scelloo Assessment.
 - Docker
 - PostgreSql
 
+## API DOCUMENTATION
+
+[Render Deployment]( https://scello-backend-assessment.onrender.com/api/v1/api-docs)
+
 ## Usage
 
 Please follow the instructions outlined below to run the code.
