@@ -2,7 +2,7 @@ import { RequestQuery } from "@src/shared";
 
 export type ProductCreate = {
   description: string;
-  price: number | null;
+  price: number;
   stockQuantity: number;
   category: string;
   name: string;

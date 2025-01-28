@@ -2,7 +2,7 @@ import { sequelize } from "@/database";
 import { Product } from "@/models";
 import { Repository } from "sequelize-typescript";
 import { ProductCreate, ProductQuery, ProductUpdate } from "./product.types";
-import { Op, OrderItem, UpdateOptions, WhereOptions } from "sequelize";
+import { Op, OrderItem, WhereOptions } from "sequelize";
 import { Pagination } from "../pagination";
 import { IPageData } from "@src/shared";
 import { IResult, Result } from "../result";

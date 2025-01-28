@@ -17,5 +17,5 @@ console.log("port", port, "environment", environment);
 app.use("/api/v1", v1Route);
 
 app.listen(port, () => {
-  console.log(`[server]: Server is on port ${port}`);
+  console.log(`[server]: Server is listening on port ${port}`);
 });

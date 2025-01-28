@@ -20,14 +20,12 @@
     "esModuleInterop": true,
     "paths": {
       "@src/*": ["./src/*"],
-      "@database/*": ["./src/database/*"],
-      "@database": ["./src/database"],
+      "@/database/*": ["./src/database/*"],
       "@/utils/*": ["./src/utils/*"],
       "@shared/*": ["./src/shared/*"],
-      "@shared": ["./src/shared"],
       "@/*": ["./*"]
     }
   },
-   "include": ["**/*.ts", "*.ts", "*/*.ts"],
+   "include": ["**/*.ts", "*.ts", "*/*.ts", "src/v1/swagger-docs"],
   "exclude": ["node_modules"]
 }
