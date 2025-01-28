@@ -11,6 +11,10 @@ This repository contains code and configurations for Scelloo Assessment.
 
 ## API DOCUMENTATION
 
+The swagger route can be accessed via the `/api/v1/api-docs` route.
+
+For example, in local environment, `http://localhost:5000/api/v1/api-docs`
+
 [Render Deployment]( https://scello-backend-assessment.onrender.com/api/v1/api-docs)
 
 ## Usage

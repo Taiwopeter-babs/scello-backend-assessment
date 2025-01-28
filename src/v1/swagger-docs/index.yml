@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Scelloo E-Commerce V1 API Documentation
+  version: 1.0.0
+  description: This is the API Documentation for Scelloo E-Commerce Backend Task
+  license:
+    name: MIT
+    url: https://spdx.org/licenses/MIT.html
+  contact:
+    name: Scelloo
+    url: https://scelloo.com
+    email: info@email.com
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CommonParams:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+    Product:
+      allOf:
+        - $ref: "#/components/schemas/CommonParams"
+        - $ref: "#/components/schemas/ProductUpdate"
+    ProductUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        stockQuantity:
+          type: integer
+        price:
+          type: number
+          format: decimal
+    ProductCreate:
+      allOf:
+        - $ref: "#/components/schemas/ProductUpdate"
+      required:
+        - name
+        - description
+        - category
+        - stockQuantity
+        - price
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+    ErrorArray:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              paths:
+                type: array
+                items:
+                  type: string
+paths:  
+  /api/v1/products:
+    get:
+      tags:
+        - Products
+      summary: Returns all products Paginated (20 per request).
+      parameters:
+           - in: query
+             name: startingAfter
+             schema:
+               type: string
+           - in: query
+             name: endingBefore
+             schema:
+               type: string
+ 
+           - in: query
+             name: name
+             schema:
+               type: string
+               nullable: true
+             description: The name of the product to filter by. Supports partial matches.
+ 
+           - in: query
+             name: category
+             schema:
+               type: string
+               nullable: true
+             description: The category to filter by.
+ 
+           - in: query
+             name: minPrice
+             schema:
+               type: integer
+               nullable: true
+             description: The minimum price to filter by.
+ 
+           - in: query
+             name: maxPrice
+             schema:
+               type: integer
+               nullable: true
+             description: The maximum ticket price to filter by.
+ 
+           - in: query
+             name: sortName
+             schema:
+               type: string
+               enum:
+                - asc
+                - desc
+               nullable: true
+             description: Sorts the products by name in ascending or descending order.
+ 
+           - in: query
+             name: sortPrice
+             schema:
+               type: string
+               enum:
+                - asc
+                - desc
+               nullable: true
+             description: Sorts the products by price in ascending or descending order.
+ 
+           - in: query
+             name: sortStockQuantity
+             schema:
+               type: string
+               nullable: true
+             description: Sorts the products by their names in ascending or descending order.
+
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  prevCursor:
+                     type: string
+                  nextCursor:
+                     type: string
+    post:
+      tags:
+        - Products
+      summary: Creates a product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ProductCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  event:
+                    $ref: '#/components/schemas/Product'
+                  message:
+                    type: string
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorArray'
+                  - $ref: '#/components/schemas/Error'
+                    
+  /api/v1/products/{id}:
+    get:
+     tags:
+       - Products
+     summary: Returns a product
+     parameters:
+          - in: path
+            name: id
+            schema:
+              type: number
+            required: true
+
+     responses:
+       '200':
+         description: OK
+         content:
+           application/json:
+             schema:
+               $ref: '#/components/schemas/Product'
+    delete:
+      tags:
+        - Products
+      summary: Delete a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the product to delete
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Products
+      summary: Updates a product.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the product to update
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ProductUpdate'
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorArray'
+                  - $ref: '#/components/schemas/Error'
