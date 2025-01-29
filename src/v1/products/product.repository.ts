@@ -7,7 +7,7 @@ import { Pagination } from "../pagination";
 import { IPageData } from "@src/shared";
 import { IResult, Result } from "../result";
 
-export default class ProductRepository extends Pagination {
+export class ProductRepository extends Pagination {
   private _productRepo: Repository<Product>;
   constructor() {
     super();
@@ -139,13 +139,13 @@ export default class ProductRepository extends Pagination {
 
       if (!productExists) return Result.NotFound("Product was not found");
 
-      const product = await this._productRepo.destroy({
-        where: { id: productId },
-      });
+      await this._productRepo.destroy({ where: { id: productId } });
 
-      return Result.Created(product);
+      return Result.Ok();
     } catch (error) {
       return Result.ServerError("An error occurred while creating product");
     }
   }
 }
+
+export default new ProductRepository();

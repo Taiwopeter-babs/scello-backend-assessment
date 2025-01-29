@@ -1,39 +1,43 @@
 import { Router } from "express";
-import productController from "./product.controller";
+import userController from "./user.controller";
 import { validateIdParameter } from "@src/shared/middleware";
-import { validateProductBody, validateProductUpdateBody } from "./product.middleware";
+import { validateUserBody, validateUserUpdateBody } from "./user.middleware";
 import passport from "passport";
-
 import authController from "../authentication/auth.controller";
 import { UserRole } from "@src/shared";
 
-export const productRouter = Router();
+export const userRouter = Router();
 
-productRouter.get("/", productController.getProducts);
-
-productRouter.post(
+userRouter.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   authController.authorizeRole([UserRole.Admin]),
-  validateProductBody,
-  productController.addProduct
+  userController.getUsers
 );
 
-productRouter.get("/:id", validateIdParameter, productController.getProduct);
+userRouter.post("/", validateUserBody, userController.addUser);
 
-productRouter.delete(
+userRouter.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   authController.authorizeRole([UserRole.Admin]),
   validateIdParameter,
-  productController.deleteProduct
+  userController.getUser
 );
 
-productRouter.put(
+userRouter.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   authController.authorizeRole([UserRole.Admin]),
   validateIdParameter,
-  validateProductUpdateBody,
-  productController.updateProduct
+  userController.deleteUser
+);
+
+userRouter.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  authController.authorizeRole([UserRole.Admin]),
+  validateIdParameter,
+  validateUserUpdateBody,
+  userController.updateUser
 );

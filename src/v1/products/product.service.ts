@@ -1,7 +1,7 @@
-import ProductRepository from "./product.repository";
+import productRepository, { ProductRepository } from "./product.repository";
 import { ProductCreate, ProductQuery, ProductUpdate } from "./product.types";
 
-export default class ProductService {
+export class ProductService {
   private _productRepository: ProductRepository;
 
   constructor(productRepository: ProductRepository) {
@@ -38,3 +38,5 @@ export default class ProductService {
     return productData;
   }
 }
+
+export default new ProductService(productRepository);
