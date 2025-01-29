@@ -1,1 +1,2 @@
-export { Product } from "../src/v1/products/product.model";
+export { Product } from "./product.model";
+export { User } from "./user.model";

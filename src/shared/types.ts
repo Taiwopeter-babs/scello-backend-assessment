@@ -12,3 +12,8 @@ export type IPageData<T> = {
   prevCursor: string;
   nextCursor: string;
 };
+
+export enum UserRole {
+  Admin = "Admin",
+  User = "User",
+}

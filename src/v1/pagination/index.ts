@@ -16,7 +16,7 @@ export class Pagination {
    * - startingAfter - An value after the next dataset or page will be returned.
    * The dataset returned does not include the data which has the same ID value as it.
    */
-  getCursorBasedPaginationQuery({ endingBefore, startingAfter }: RequestQuery) {
+  protected getCursorBasedPaginationQuery({ endingBefore, startingAfter }: RequestQuery) {
     /** The value of the cursor (id of the tracking item) */
     const cursor = startingAfter ?? endingBefore;
 
@@ -41,7 +41,7 @@ export class Pagination {
   }
 
   /** Get the paginated dataset */
-  getPaginationData<T>(data: T, navDirection: PageDirection): Promise<IPageData<T>> {
+  protected getPaginationData<T>(data: T, navDirection: PageDirection): Promise<IPageData<T>> {
     if (!Array.isArray(data) || data.length === 0) {
       return Promise.resolve({
         prevCursor: "",

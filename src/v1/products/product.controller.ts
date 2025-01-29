@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import ProductService from "./product.service";
+import productService, { ProductService } from "./product.service";
 import { ProductCreate, ProductQuery, ProductUpdate } from "./product.types";
 
-export default class ProductController {
+export class ProductController {
   private _productService: ProductService;
   constructor(productService: ProductService) {
     this._productService = productService;
@@ -68,3 +68,5 @@ export default class ProductController {
     response.status(statusCode).json(dataToReturn);
   };
 }
+
+export default new ProductController(productService);
