@@ -82,13 +82,13 @@ The API server is deployed on render with the url `https://scello-backend-assess
 ## Example
 
 ```javascript
-const BASE_URL =  'https://scello-backend-assessment.onrender.com'
+const BASE_URL =  'https://scello-backend-assessment.onrender.com/api/v1'
 ```
 
 - GET ALL PRODUCTS (PAGINATED)
 
 ```javascript
-const response = await fetch(BASE_URL);
+const response = await fetch(`${BASE_URL}/products`);
 console.log(response.json());
 ```
 
@@ -121,7 +121,7 @@ const data = {
     }
 
 
-const res =  await fetch("https://api.github.com/users/andrewmcodes", 
+const res =  await fetch(`${BASE_URL}/products`, 
 {
     method: "POST", 
     body: JSON.stringify(data)
