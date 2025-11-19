@@ -33,7 +33,7 @@ export function fooFunction(text: string): Record<FooType, string | number> {
     
     return resultObject as Record<FooType, string | number>;
   } catch (error) {
-    console.log(error);
+    console.log(error, 'YAAA');
     return resultObject;
   }
 }
